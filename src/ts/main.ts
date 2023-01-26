@@ -21,22 +21,24 @@ document.getElementById("clearTodos")?.addEventListener("click", () => {
   }
 );
 
-function createNewTodo(todoText: string, todos: Todo[]) {
+export function createNewTodo(todoText: string, todos: Todo[]) {
   let result = addTodo(todoText, todos);
 
   if (result.success) {
-    createHtml(todos);
+    exports.createHtml(todos);
   } else {
-    displayError(result.error, true);
+    exports.displayError(result.error, true);
   }
 }
 
-function createHtml(todos: Todo[]) {
+export function createHtml(todos: Todo[]) {
   localStorage.setItem("todos", JSON.stringify(todos));
 
-  let todosContainer: HTMLUListElement = document.getElementById(
-    "todos"
-  ) as HTMLUListElement;
+  let todosContainer: HTMLUListElement = document.getElementById("todos") as HTMLUListElement;
+  
+  // if (todosContainer) {
+  //   todosContainer.innerHTML = "";
+  // } 
 
   todosContainer.innerHTML = "";
 
@@ -51,18 +53,19 @@ function createHtml(todos: Todo[]) {
     li.innerHTML = todos[i].text;
     li.addEventListener("click", () => {
       toggleTodo(todos[i]);
+      console.dir(todos[i]);
     });
 
     todosContainer.appendChild(li);
   }
 }
 
-function toggleTodo(todo: Todo) {
-  changeTodo(todo);
-  createHtml(todos);
+export function toggleTodo(todo: Todo) {
+  changeTodo(todo)
+  exports.createHtml(todos); 
 }
 
-function displayError(error: string, show: boolean) {
+export function displayError(error: string, show: boolean) {
   let errorContainer: HTMLDivElement = document.getElementById(
     "error"
   ) as HTMLDivElement;
@@ -76,9 +79,10 @@ function displayError(error: string, show: boolean) {
   }
 }
 
-function clearTodos(todos: Todo[]) {
+export function clearTodos(todos: Todo[]) {
   removeAllTodos(todos);
-  createHtml(todos);
+  exports.createHtml(todos);
 }
 
-createHtml(todos);
+// kommentera bort eller använda if funktionen
+//createHtml(todos);
