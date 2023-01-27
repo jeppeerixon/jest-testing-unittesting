@@ -69,36 +69,30 @@ describe("Tests for createNewTodo", () => {
         // 1 arrange
         let todos: Todo[] = [];
         let text = 'do something';
-        let result = addTodo(text, todos);
         let spy = jest.spyOn(main, "createHtml").mockReturnValue();
 
+        // 2 act
         main.createNewTodo(text, todos);
 
-        // 2 act
-        if (result.success) {
-            // 3 assert
-            expect(spy).toBeCalled();
-            expect(result.error).toBe("");
-        }
+        // 3 assert
+        expect(spy).toBeCalled();
+        expect(todos.length).toBe(1);
 
     });
 
     test("Should NOT trigger CreateHTML, display error", () => {
         // 1 arrange
       
-        let todos: Todo[] = [];
+        let todosList: Todo[] = [];
         let text = 'x';
-        let result1 = addTodo(text, todos);
-        let spy2 = jest.spyOn(main, "createHtml").mockReturnValue();
-        result1.success = false;
+        let spy2 = jest.spyOn(main, "displayError").mockReturnValue();
 
         // 2 act
-        main.createNewTodo(text, todos);
-        if (result1.success == false) {
-            // 3 assert
-            expect(spy2).toBeCalled();
-            expect(result1.error).toBe("Du måste ange minst tre bokstäver");
-        }
+        main.createNewTodo(text, todosList);
+
+        // 3 assert
+        expect(spy2).toBeCalled();
+        expect(todosList.length).toBe(0);
 
     });
 
