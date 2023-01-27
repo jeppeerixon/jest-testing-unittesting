@@ -1,11 +1,11 @@
 /**
  * @jest-environment jsdom
 */
-import { displayError, toggleTodo } from "../main";
-import { addTodo, changeTodo, removeAllTodos } from "../functions";
-import { Todo } from "../models/Todo";
-import * as main from "../main";
-import * as functions from "../functions";
+import { displayError, toggleTodo } from "../ts/main";
+import { addTodo, changeTodo, removeAllTodos } from "../ts/functions";
+import { Todo } from "../ts/models/Todo";
+import * as main from "../ts/main";
+import * as functions from "../ts/functions";
 
 describe("Tests for displayError function", () => {
 

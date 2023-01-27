@@ -1,5 +1,5 @@
-import { addTodo, changeTodo } from "../functions";
-import { Todo } from "../models/Todo";
+import { addTodo, changeTodo } from "../ts/functions";
+import { Todo } from "../ts/models/Todo";
 
 describe("Test for removeAllTodos", () => {
 
