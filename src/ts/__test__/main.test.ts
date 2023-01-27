@@ -8,6 +8,32 @@ import * as main from "../main";
 import * as functions from "../functions";
 
 describe("Tests for displayError function", () => {
+
+    test("Should NOT show error message", () => {
+        // 1 arrange
+        document.body.innerHTML = `
+        <form id="newTodoForm">
+        <div>
+            <input type="text" id="newTodoText" />
+            <button>Skapa</button>
+            <button type="button" id="clearTodos">Rensa lista</button>
+        </div>
+        <div id="error" class="error"></div>
+        </form>
+        <ul id="todos" class="todo"></ul>
+        `;
+
+        let errorDiv: HTMLDivElement = document.querySelector("#error") as HTMLDivElement;
+        let textToSend: string = "";
+
+        // 2 act
+        displayError(textToSend, false);
+
+        // 3 assert
+        expect(errorDiv.classList.contains('show')).toBe(false);
+        expect(errorDiv.innerHTML).toBe("");
+
+    });
     
     test("Should display error message", () => {
         // 1 arrange
@@ -28,35 +54,11 @@ describe("Tests for displayError function", () => {
 
         // 2 act
         displayError(textToSend, true);
+        //let errorText = errorDiv.innerHTML
 
         // 3 assert
         expect(errorDiv.classList.contains('show')).toBe(true);
-        // kanske lägg till extra expect?
-    });
-
-    test("Should NOT show error message", () => {
-        // 1 arrange
-        document.body.innerHTML = `
-        <form id="newTodoForm">
-        <div>
-            <input type="text" id="newTodoText" />
-            <button>Skapa</button>
-            <button type="button" id="clearTodos">Rensa lista</button>
-        </div>
-        <div id="error" class="error"></div>
-        </form>
-        <ul id="todos" class="todo"></ul>
-        `;
-
-        let errorDiv: HTMLDivElement = document.querySelector("#error") as HTMLDivElement;
-        let textToSend: string = "error message";
-
-        // 2 act
-        displayError(textToSend, false)
-
-        // 3 assert
-        expect(errorDiv.classList.contains('show')).toBe(false);
-        // kanske lägg till extra expect?
+        expect(errorDiv.innerHTML).toBe("error message");
     });
 
 });
@@ -124,7 +126,7 @@ describe("Tests for toggleTodo", () => {
     
     test("Should trigger changeTodo & createHTML", () => {
         // 1 arrange
-        let newDodos: Todo = {text: "bajs", done: true};
+        let newDodos: Todo = {text: "something", done: true};
         let jamesBond = jest.spyOn(functions, "changeTodo").mockReturnValue();
         let ethanHunt = jest.spyOn(main, "createHtml").mockReturnValue();
 

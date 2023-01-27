@@ -26,6 +26,7 @@ export function createNewTodo(todoText: string, todos: Todo[]) {
 
   if (result.success) {
     exports.createHtml(todos);
+    // exports.displayError(result.error, false); gör så error meddelandet försvinner
   } else {
     exports.displayError(result.error, true);
   }

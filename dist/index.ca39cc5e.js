@@ -538,9 +538,7 @@ parcelHelpers.export(exports, "createNewTodo", ()=>createNewTodo);
 parcelHelpers.export(exports, "createHtml", ()=>createHtml);
 parcelHelpers.export(exports, "toggleTodo", ()=>toggleTodo);
 parcelHelpers.export(exports, "displayError", ()=>displayError);
-parcelHelpers.export(exports, "clearTodos", ()=>clearTodos) // kommentera bort eller använda if funktionen
- //createHtml(todos);
-;
+parcelHelpers.export(exports, "clearTodos", ()=>clearTodos);
 var _functions = require("./functions");
 let todos = JSON.parse(localStorage.getItem("todos") || "[]");
 document.getElementById("clearTodos")?.addEventListener("click", ()=>{
@@ -554,8 +552,10 @@ document.getElementById("newTodoForm")?.addEventListener("submit", (e)=>{
 });
 function createNewTodo(todoText, todos) {
     let result = (0, _functions.addTodo)(todoText, todos);
-    if (result.success) exports.createHtml(todos);
-    else exports.displayError(result.error, true);
+    if (result.success) {
+        exports.createHtml(todos);
+        exports.displayError(result.error, false);
+    } else exports.displayError(result.error, true);
 }
 function createHtml(todos) {
     localStorage.setItem("todos", JSON.stringify(todos));
@@ -577,7 +577,6 @@ function createHtml(todos) {
     }
 }
 function toggleTodo(todo) {
-    console.log(todo);
     (0, _functions.changeTodo)(todo);
     exports.createHtml(todos);
 }
@@ -591,6 +590,8 @@ function clearTodos(todos) {
     (0, _functions.removeAllTodos)(todos);
     exports.createHtml(todos);
 }
+// kommentera bort eller använda if funktionen
+createHtml(todos);
 
 },{"./functions":"dxSxr","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dxSxr":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
