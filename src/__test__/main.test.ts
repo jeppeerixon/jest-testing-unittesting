@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
 */
-import { displayError, toggleTodo } from "../ts/main";
+import { displayError, toggleTodo, createHtml } from "../ts/main";
 import { addTodo, changeTodo, removeAllTodos } from "../ts/functions";
 import { Todo } from "../ts/models/Todo";
 import * as main from "../ts/main";
@@ -130,6 +130,83 @@ describe("Tests for toggleTodo", () => {
         // 3 assert
         expect(jamesBond).toBeCalled();
         expect(ethanHunt).toBeCalled();
+
+        ethanHunt.mockRestore();
     }
     );
 });
+
+describe("Tests for createHtml", () => {
+
+    test("should produce todo lists", () => {
+        // 1 arrange
+        document.body.innerHTML = `
+        <form id="newTodoForm">
+        <div>
+            <input type="text" id="newTodoText" />
+            <button>Skapa</button>
+            <button type="button" id="clearTodos">Rensa lista</button>
+        </div>
+        <div id="error" class="error"></div>
+        </form>
+        <ul id="todos" class="todo">
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        `;
+
+        let listOfTodos: Todo[] = [
+            { text: 'blabla', done: false },
+            { text: 'wowowo', done: false },
+            { text: 'hejhej', done: false }
+        ];
+
+        // 2 act
+        createHtml(listOfTodos);
+        let todoLI: NodeListOf<HTMLLIElement> = document.querySelectorAll(".todo__text") as NodeListOf<HTMLLIElement>;
+        Array.from(todoLI);
+        
+        
+        
+        // 3 assert
+        expect(todoLI.length).toBe(3);
+        
+
+    });
+
+    test("should find done todo in html LI", () => {
+        // 1 arrange
+        document.body.innerHTML = `
+        <form id="newTodoForm">
+        <div>
+            <input type="text" id="newTodoText" />
+            <button>Skapa</button>
+            <button type="button" id="clearTodos">Rensa lista</button>
+        </div>
+        <div id="error" class="error"></div>
+        </form>
+        <ul id="todos" class="todo">
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        `;
+
+        let listOfTodos: Todo[] = [
+            { text: 'blabla', done: false },
+            { text: 'wowowo', done: true },
+            { text: 'hejhej', done: false }
+        ];
+
+        // 2 act
+        createHtml(listOfTodos);
+        let todoLI: HTMLLIElement = document.querySelector(".todo__text--done") as HTMLLIElement;
+        
+        // 3 assert
+        expect(todoLI.innerHTML).toBe("wowowo");
+        
+
+    });
+
+})

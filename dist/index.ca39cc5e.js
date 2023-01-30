@@ -539,10 +539,14 @@ parcelHelpers.export(exports, "createHtml", ()=>createHtml);
 parcelHelpers.export(exports, "toggleTodo", ()=>toggleTodo);
 parcelHelpers.export(exports, "displayError", ()=>displayError);
 parcelHelpers.export(exports, "clearTodos", ()=>clearTodos);
+parcelHelpers.export(exports, "sortTodos", ()=>sortTodos);
 var _functions = require("./functions");
 let todos = JSON.parse(localStorage.getItem("todos") || "[]");
 document.getElementById("clearTodos")?.addEventListener("click", ()=>{
     clearTodos(todos);
+});
+document.getElementById("sortBtn")?.addEventListener("click", ()=>{
+    sortTodos(todos);
 });
 document.getElementById("newTodoForm")?.addEventListener("submit", (e)=>{
     e.preventDefault();
@@ -552,16 +556,14 @@ document.getElementById("newTodoForm")?.addEventListener("submit", (e)=>{
 });
 function createNewTodo(todoText, todos) {
     let result = (0, _functions.addTodo)(todoText, todos);
-    if (result.success) {
-        exports.createHtml(todos);
-        exports.displayError(result.error, false);
-    } else exports.displayError(result.error, true);
+    if (result.success) exports.createHtml(todos);
+    else exports.displayError(result.error, true);
 }
 function createHtml(todos) {
     localStorage.setItem("todos", JSON.stringify(todos));
     let todosContainer = document.getElementById("todos");
     // if (todosContainer) {
-    //   todosContainer.innerHTML = "";
+    //    todosContainer.innerHTML = "";
     // } 
     todosContainer.innerHTML = "";
     for(let i = 0; i < todos.length; i++){
@@ -571,7 +573,7 @@ function createHtml(todos) {
         li.innerHTML = todos[i].text;
         li.addEventListener("click", ()=>{
             toggleTodo(todos[i]);
-            console.dir(todos[i]);
+            console.log(todos[i]);
         });
         todosContainer.appendChild(li);
     }
@@ -590,6 +592,10 @@ function clearTodos(todos) {
     (0, _functions.removeAllTodos)(todos);
     exports.createHtml(todos);
 }
+function sortTodos(todos) {
+    (0, _functions.sortAllTodos)(todos);
+    exports.createHtml(todos);
+}
 // kommentera bort eller använda if funktionen
 createHtml(todos);
 
@@ -599,6 +605,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "addTodo", ()=>addTodo);
 parcelHelpers.export(exports, "changeTodo", ()=>changeTodo);
 parcelHelpers.export(exports, "removeAllTodos", ()=>removeAllTodos);
+parcelHelpers.export(exports, "sortAllTodos", ()=>sortAllTodos);
 var _todo = require("./models/Todo");
 function addTodo(todoText, todos) {
     if (todoText.length > 2) {
@@ -618,6 +625,15 @@ function changeTodo(todo) {
 }
 function removeAllTodos(todos) {
     todos.splice(0, todos.length);
+}
+function sortAllTodos(todos) {
+    todos.sort(function(a, b) {
+        let x = a.text.toLowerCase();
+        let y = b.text.toLowerCase();
+        if (x < y) return -1;
+        if (x > y) return 1;
+        return 0;
+    });
 }
 
 },{"./models/Todo":"6LFGW","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6LFGW":[function(require,module,exports) {

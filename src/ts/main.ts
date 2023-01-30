@@ -1,10 +1,14 @@
-import { addTodo, changeTodo, removeAllTodos } from "./functions";
+import { addTodo, changeTodo, removeAllTodos, sortAllTodos } from "./functions";
 import { Todo } from "./models/Todo";
 
 let todos: Todo[] = JSON.parse(localStorage.getItem("todos") || "[]");
 
 document.getElementById("clearTodos")?.addEventListener("click", () => {
   clearTodos(todos);
+});
+
+document.getElementById("sortBtn")?.addEventListener("click", () => {
+  sortTodos(todos);
 });
 
 (document.getElementById("newTodoForm") as HTMLFormElement)?.addEventListener(
@@ -38,7 +42,7 @@ export function createHtml(todos: Todo[]) {
   let todosContainer: HTMLUListElement = document.getElementById("todos") as HTMLUListElement;
   
   // if (todosContainer) {
-  //   todosContainer.innerHTML = "";
+  //    todosContainer.innerHTML = "";
   // } 
 
   todosContainer.innerHTML = "";
@@ -54,7 +58,7 @@ export function createHtml(todos: Todo[]) {
     li.innerHTML = todos[i].text;
     li.addEventListener("click", () => {
       toggleTodo(todos[i]);
-      console.dir(todos[i]);
+      console.log(todos[i]);
     });
 
     todosContainer.appendChild(li);
@@ -85,5 +89,10 @@ export function clearTodos(todos: Todo[]) {
   exports.createHtml(todos);
 }
 
+export function sortTodos(todos: Todo[]) {
+  sortAllTodos(todos);
+  exports.createHtml(todos);
+}
+
 // kommentera bort eller använda if funktionen
-//createHtml(todos);
+//createHtml(todos); 
